@@ -1,101 +1,115 @@
-# Bot Buscador de Highlights no YouTube
+# YouTube Highlights Finder Bot
+
+OBS: This readme has done with assistance of AI.
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python)
 ![Selenium](https://img.shields.io/badge/Selenium-4-green?style=for-the-badge&logo=selenium)
 
-Este projeto é um script de automação em Python desenhado para encontrar rapidamente os melhores highlights de times no YouTube.
+This project is a Python automation script designed to quickly find the best highlights of teams on YouTube.
 
-Em vez de pesquisar manualmente e adivinhar qual vídeo tem o melhor conteúdo, este bot automatiza o processo. Ele pesquisa pelo nome do time, analisa os resultados, e abre o vídeo com o **maior número de visualizações** para você assistir.
+Instead of manually searching and guessing which video has the best content, this bot automates the process. It searches by the team name, analyzes the results, and opens the video with the **highest number of views** for you to watch.
 
-## 🤖 Como Funciona
+## 🤖 How It Works
 
-O bot simula as ações de um usuário comum diretamente no navegador Google Chrome:
+The bot simulates the actions of a regular user directly in the Google Chrome browser:
 
-1.  **Inicialização**: O script inicia o Google Chrome usando o Selenium. Ele aplica `ChromeOptions` especiais (como `--disable-blink-features=AutomationControlled`) para que o YouTube não o identifique como um bot.
-2.  **Pesquisa**: Ele acessa `youtube.com`, lida com o pop-up de cookies (se aparecer) e digita a consulta de busca (ex: "Real Madrid highlights") na barra de pesquisa.
-3.  **Análise (Parsing)**: Após a página de resultados carregar, o bot utiliza o `VideoParser` para:
-    * Encontrar todos os elementos de vídeo na página.
-    * Extrair o texto de visualizações de cada um (ex: "1.2M views", "10K views").
-    * Converter esse texto em um número inteiro (ex: `1200000`, `10000`) para permitir uma comparação precisa.
-4.  **Seleção**: O script compara os números de visualizações e identifica qual vídeo da lista é o mais popular.
-5.  **Navegação**: O bot navega para a URL do vídeo com mais visualizações.
-6.  **Espera**: O script principal (`main.py`) fica em modo de espera, permitindo que o usuário assista ao vídeo. Para encerrar o programa, basta que o usuário **feche a janela do navegador manualmente**.
+1.  **Initialization**: The script starts Google Chrome using Selenium. It applies special `ChromeOptions` (such as `--disable-blink-features=AutomationControlled`) so that YouTube does not identify it as a bot.
+2.  **Search**: It accesses `youtube.com`, handles the cookie pop-up (if it appears), and types the search query (e.g., "Real Madrid highlights") into the search bar.
+3.  **Parsing (Analysis)**: After the results page loads, the bot uses the `VideoParser` to:
+    * Find all video elements on the page.
+    * Extract the view count text for each one (e.g., "1.2M views", "10K views").
+    * Convert this text into an integer (e.g., `1200000`, `10000`) to allow accurate comparison.
+4.  **Selection**: The script compares the view counts and identifies which video in the list is the most popular.
+5.  **Navigation**: The bot navigates to the URL of the video with the highest number of views.
+6.  **Wait Mode**: The main script (`main.py`) stays in wait mode, allowing the user to watch the video. To end the program, the user simply needs to **close the browser window manually**.
 
-## ✨ Características Principais
+## ✨ Main Features
 
-* **Automação com Selenium**: Utiliza a biblioteca Selenium e o `webdriver-manager` para controlar o navegador Chrome de forma robusta.
-* **Modo Anti-Detecção**: O navegador é iniciado com flags especiais para evitar ser identificado como um bot, permitindo o acesso à versão padrão do YouTube.
-* **Parsing Inteligente**: Capaz de ler e converter o texto de visualizações (como "1.2M views", "10K views", "808 views") em números inteiros para uma comparação precisa.
-* **Fluxo Interativo**: O bot conclui sua tarefa e devolve o controle ao usuário, aguardando que ele feche o navegador para finalizar o script de forma limpa.
+* **Automation with Selenium**: Uses the Selenium library and `webdriver-manager` to control the Chrome browser reliably.
+* **Anti-Detection Mode**: The browser starts with special flags to prevent being identified as a bot, allowing access to YouTube’s standard interface.
+* **Smart Parsing**: Can read and convert the view count text (like "1.2M views", "10K views", "808 views") into integers for accurate comparison.
+* **Interactive Flow**: The bot completes its task and gives control back to the user, waiting for them to close the browser to end the script cleanly.
 
-## ⚙️ Instalação e Execução: Passo a Passo
+## ⚙️ Installation and Execution: Step by Step
 
-Siga estes passos para configurar o ambiente e rodar o projeto.
+Follow these steps to set up the environment and run the project.
 
-### 1. Pré-requisitos
+### 1. Prerequisites
 
-* **Python 3.10** ou superior instalado.
-* **Google Chrome** instalado (o bot usará este navegador).
+* **Python 3.10** or higher installed.
+* **Google Chrome** installed (the bot uses this browser).
 
-### 2. Clonar o Repositório
+### 2. Clone the Repository
 
-Primeiro, clone este repositório para sua máquina local e entre na pasta do projeto:
+First, clone this repository to your local machine and enter the project folder:
 
 ```bash
-git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
-cd seu-repositorio
+git clone [https://github.com/your-username/your-repository.git](https://github.com/your-username/your-repository.git)
+cd your-repository
 ```
 
-### 3\. Criar Ambiente Virtual
+### 3. Clone the Repository
 
-É uma boa prática usar um ambiente virtual (`.venv`) para isolar as dependências do projeto.
+It’s a good practice to use a virtual environment (.venv) to isolate the project’s dependencies.
 
 ```bash
-# Crie o ambiente virtual
+# Create the virtual environment
 python -m venv .venv
 ```
 
-### 4\. Ativar o Ambiente Virtual
+### 4. Activate the Virtual Environment
 
-Você precisa ativar o ambiente antes de instalar os pacotes.
+You need to activate the environment before installing the packages.
 
-**No Windows (PowerShell):**
+On Windows (PowerShell):
+
 
 ```bash
 .\.venv\Scripts\Activate.ps1
 ```
 
-**No macOS ou Linux:**
+
+On macOS or Linux:
 
 ```bash
 source .venv/bin/activate
 ```
 
-Você saberá que funcionou pois o nome do ambiente (ex: `(.venv)`) aparecerá no início do seu prompt de comando.
 
-### 5\. Instalar as Dependências
 
-Este projeto usa `selenium` para automação e `webdriver-manager` para baixar e gerenciar o driver do Chrome automaticamente.
+You’ll know it worked because the environment name (e.g., (.venv)) will appear at the beginning of your command prompt.
 
-Instale o arquivo requirements.txt para obter as bibliotecas necessárias.
+### 5. Install the Dependencies
+
+This project uses selenium for automation and webdriver-manager to automatically download and manage the Chrome driver.
+
+Install the dependencies listed in requirements.txt:
+
+
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 6\. Executar o Bot
+### 6. Run the Bot
 
-Com o ambiente ativado e os pacotes instalados, execute o script `main.py`:
+With the environment activated and the packages installed, run the main.py script:
+
 
 ```bash
 python main.py
 ```
 
-### 7\. Interagir com o Bot
+### 7. Interact with the Bot
 
-1.  O terminal solicitará: `Enter the team name to search for:`
-2.  Digite o nome do time (ex: `Corinthians`) e pressione `Enter`.
-3.  Uma nova janela do Chrome será aberta. O bot fará a pesquisa e abrirá o vídeo com mais visualizações.
-4.  O terminal exibirá a mensagem:
-    > `The browser will remain open. Close the browser window to exit.`
-5.  Quando terminar de assistir, **simplesmente feche a janela do Chrome**. O script no terminal detectará isso e será encerrado automaticamente.
+1. The terminal will prompt: Enter the team name to search for:
+
+2. Type the team name (e.g., Real Madrid) and press Enter.
+
+3. A new Chrome window should open. The bot will perform the search and open the video with the most views.
+
+4. The terminal will display the message: "The browser will remain open. Close the browser window to exit."
+
+5. When you finish watching, simply close the Chrome window. The script in the terminal will detect it and close automatically.
+
+
