@@ -1,51 +1,64 @@
 import time
-from bot.workflow import YoutubeBot
-# Import this exception to detect when the browser is closed
-from selenium.common.exceptions import WebDriverException
+from bot.workflow import YoutubeBot   # import the main bot class that does all the heavy lifting
+from selenium.common.exceptions import WebDriverException  # used to catch browser-related errors
 
 def main():
-    """
-    Main entry point for the application.
-    Handles user input and orchestrates the bot's workflow.
-    """
+    # It asks for a team name, creates the bot, runs the workflow,
+    # and keeps the browser open until the user closes it.
+    
+    # ask the user to type a team name
     team_name = input("Enter the team name to search for: ")
+    
+    # build the search query for YouTube
     search_query = f"{team_name} highlights"
     
-    bot = None
+    bot = None  # just initializing the bot variable so it exists even if something crashes later
     try:
+        # create a YoutubeBot instance
         bot = YoutubeBot()
+        
+        # run the bot's main workflow (this probably opens Chrome, searches, etc.)
         bot.run_workflow(search_query)
         
         print("\nWorkflow completed successfully.")
         print("The browser will remain open. Close the browser window to exit.")
         
-        # This loop will run as long as the browser is open.
-        # It will break when the user manually closes the browser window.
+        
+        # This loop keeps running as long as the browser is open
+        # once you manually close the browser window, it’ll break out of the loop
+        
         while True:
-            # Accessing .title is a lightweight way to check if the browser is alive.
-            # If the user closes the window, this will raise a WebDriverException.
-            _ = bot.driver.title 
-            time.sleep(1)
+            # accessing .title just checks if the browser is still alive
+            # if you close it, Selenium will throw a WebDriverException
+            _ = bot.driver.title  
+            time.sleep(1)  # wait 1 second before checking again
 
     except WebDriverException as e:
-        # This specific exception is raised when the browser is closed manually.
+        # This catches Selenium/browser errors 
+        # mainly when the browser window is closed by the user
+        
         if "target window already closed" in str(e) or \
            "browser connection is not valid" in str(e) or \
            "no such window" in str(e):
             print("\nBrowser window closed by user.")
         else:
-            # A different WebDriver error occurred
+            # some other Selenium error happened
             print(f"\nAn unhandled WebDriver error occurred: {e}")
             
     except Exception as e:
-        # Catch any other non-Selenium errors
+        
+        # Catch any other random error that isn’t browser-related
+        
         print(f"\nAn error occurred during the bot execution: {e}")
     
     finally:
+        
+        # This part runs no matter what (even if there was an error)
+        # It makes sure the bot shuts down cleanly
         if bot:
-            # The shutdown() method will now handle cleanup gracefully
-            bot.shutdown()
-            print("Script finished. Shutdown complete.")
+            bot.shutdown()  # this method probably closes the browser and cleans things up
+            print("Script finished. Shutdown complete")
+
 
 if __name__ == "__main__":
     main()
